@@ -10,7 +10,7 @@ use App\Models\User;
 |--------------------------------------------------------------------------
 */
 
-// ── Гість (неавторизований) ───────────────────────────────────
+// ── Guest ─────────────────────────────────────────────────────
 
 it('allows guests to view the home page', function () {
     $this->get(route('home'))
@@ -35,7 +35,7 @@ it('prevents guests from storing a book', function () {
         ->assertRedirect(route('login'));
 });
 
-// ── Авторизований користувач ──────────────────────────────────
+// ── Authenticated ─────────────────────────────────────────────
 
 it('allows authenticated users to view create form', function () {
     $user = User::factory()->create();
@@ -65,7 +65,7 @@ it('allows authenticated users to store a book', function () {
     ]);
 });
 
-// ── Авторизація (Policy) ──────────────────────────────────────
+// ── Authorization (Policy) ─────────────────────────────────────
 
 it('allows the owner to edit their book', function () {
     $user = User::factory()->create();
@@ -143,7 +143,7 @@ it('prevents non-owners from deleting a book', function () {
         ->assertStatus(403);
 });
 
-// ── Валідація ─────────────────────────────────────────────────
+// ── Validation ────────────────────────────────────────────────
 
 it('validates required fields when storing a book', function () {
     $user = User::factory()->create();
@@ -153,7 +153,7 @@ it('validates required fields when storing a book', function () {
         ->assertSessionHasErrors(['title', 'description', 'author_id']);
 });
 
-// ── Фільтрація ────────────────────────────────────────────────
+// ── Filtering ─────────────────────────────────────────────────
 
 it('filters books by author on home page', function () {
     $author1 = Author::factory()->create();

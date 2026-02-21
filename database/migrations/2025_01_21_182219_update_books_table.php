@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->decimal('price', 8, 2)->nullable()->after('year'); // Додаємо поле ціни
-            $table->dropColumn('average_rating'); // Видаляємо поле рейтингу
+            $table->decimal('price', 8, 2)->nullable()->after('year');
+            $table->dropColumn('average_rating');
         });
     }
 
@@ -22,8 +22,8 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->dropColumn('price'); // Видаляємо поле ціни при відкаті
-            $table->decimal('average_rating', 3, 2)->nullable(); // Повертаємо рейтинг
+            $table->dropColumn('price');
+            $table->decimal('average_rating', 3, 2)->nullable();
         });
     }
 };

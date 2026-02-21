@@ -7,9 +7,6 @@ use Illuminate\Http\UploadedFile;
 
 class BookService
 {
-    /**
-     * Отримати книги з можливістю фільтрації за автором.
-     */
     public function getFilteredBooks(?int $authorId = null)
     {
         $query = Book::with(['author', 'user']);
@@ -21,9 +18,6 @@ class BookService
         return $query->latest()->get();
     }
 
-    /**
-     * Створити нову книгу.
-     */
     public function createBook(array $data, ?UploadedFile $coverImage = null): Book
     {
         $book = new Book($data);
@@ -38,9 +32,6 @@ class BookService
         return $book;
     }
 
-    /**
-     * Оновити існуючу книгу.
-     */
     public function updateBook(Book $book, array $data, ?UploadedFile $coverImage = null): Book
     {
         $book->fill($data);
@@ -55,9 +46,6 @@ class BookService
         return $book;
     }
 
-    /**
-     * Видалити книгу разом з обкладинкою.
-     */
     public function deleteBook(Book $book): void
     {
         $this->deleteCover($book->cover_image);
@@ -65,7 +53,7 @@ class BookService
     }
 
     /**
-     * Завантажити обкладинку в public/covers.
+     * Store cover image in public/covers and return its path.
      */
     private function uploadCover(UploadedFile $file): string
     {
@@ -75,9 +63,6 @@ class BookService
         return 'covers/' . $fileName;
     }
 
-    /**
-     * Видалити файл обкладинки, якщо він існує.
-     */
     private function deleteCover(?string $path): void
     {
         if ($path && file_exists(public_path($path))) {

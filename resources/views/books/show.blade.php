@@ -6,7 +6,6 @@
                     <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="w-full h-auto rounded-lg shadow-md">
                 </div>
 
-                <!-- Інформація про книгу -->
                 <div class="md:w-2/3 md:pl-8">
                     <h1 class="text-3xl font-bold text-gray-900">{{ $book->title }}</h1>
                     <p class="text-gray-700 mt-4">{{ $book->description }}</p>
@@ -18,7 +17,6 @@
                         <p class="text-lg text-gray-800"><strong>Seller:</strong> {{ $book->user->name }}</p>
                     </div>
 
-                    <!-- Кнопки редагування та видалення (тільки для власника) -->
                     @auth
                         @if (auth()->id() === $book->user_id)
                             <div class="mt-6 flex space-x-4">
@@ -39,7 +37,6 @@
                 </div>
             </div>
 
-            <!-- Контактна інформація продавця -->
             <div class="mt-8 p-6 bg-gray-100 rounded-lg">
                 <h3 class="text-2xl font-semibold text-gray-900">Contact Seller</h3>
                 <p class="text-gray-700 mt-2">If you're interested in purchasing this book, contact the seller:</p>

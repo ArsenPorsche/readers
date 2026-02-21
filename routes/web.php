@@ -4,10 +4,8 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// Публічні маршрути
 Route::get('/', [BookController::class, 'index'])->name('home');
 
-// Маршрути для авторизованих користувачів
 Route::middleware('auth')->group(function () {
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
     Route::post('/books', [BookController::class, 'store'])->name('books.store');
@@ -20,7 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// books.show ПІСЛЯ /books/create, щоб {book} не перехоплював "create"
+// Must be registered after /books/create to avoid {book} catching "create" as an ID
 Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
 
 require __DIR__ . '/auth.php';

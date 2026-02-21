@@ -118,14 +118,81 @@ Open [http://localhost:8000](http://localhost:8000)
 php artisan test
 ```
 
-## Docker Setup (alternative)
+## Docker Setup (Full Installation from Scratch)
+
+> The Docker entrypoint (`docker/entrypoint.sh`) automates most of the setup.
+> Below are the steps for a **cold start** — when you clone the repo for the first time on a clean machine.
+
+### 1. Clone the repository
 
 ```bash
-docker-compose up -d
-docker exec readers-app php artisan migrate --seed
+git clone https://github.com/<your-username>/readers.git
+cd readers
 ```
 
+### 2. Create the environment file
+
+```bash
+cp .env.example .env
+```
+
+> Without `.env`, Laravel won't know the database credentials defined in `docker-compose.yml`.
+
+### 3. Build and start the containers
+
+```bash
+docker compose up -d --build
+```
+
+The entrypoint script will **automatically**:
+- Install Composer dependencies (if `vendor/` is missing)
+- Install NPM packages and build frontend assets (if `public/build/` is missing)
+- Generate `APP_KEY` (if not set)
+- Wait for MySQL to be ready
+- Run migrations and seed the database
+
+### 4. Check the logs to follow the progress
+
+```bash
+docker compose logs -f app
+```
+
+Wait until you see `Starting Laravel server...` — this means everything is ready.
+
+### Manual steps (if the entrypoint didn't cover something)
+
+If you need to run any step manually (e.g. permissions issue on Linux, or you want to re-run a specific command):
+
+```bash
+# Install PHP dependencies
+docker compose exec app composer install
+
+# Generate application key
+docker compose exec app php artisan key:generate
+
+# Run migrations and seed the database
+docker compose exec app php artisan migrate --seed
+
+# Rebuild frontend assets (fixes "Vite manifest not found" error)
+docker compose exec app npm install
+docker compose exec app npm run build
+```
+
+### 5. Open the app
+
 App will be available at [http://localhost:8000](http://localhost:8000)
+
+### Stopping the containers
+
+```bash
+docker compose down
+```
+
+To also remove the database volume (full reset):
+
+```bash
+docker compose down -v
+```
 
 ## What I Practiced
 

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Припускаємо, що таблиця користувачів вже існує
-            $table->integer('rating'); // Оцінка від 1 до 5
-            $table->text('review')->nullable(); // Відгук (не обов'язково)
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->integer('rating'); // 1-5
+            $table->text('review')->nullable();
             $table->timestamps();
         });
     }
